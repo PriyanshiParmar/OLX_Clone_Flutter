@@ -14,6 +14,8 @@ class UserForm extends StatefulWidget {
 }
 
 class _UserFormState extends State<UserForm> {
+
+  //TextEditingController - Controller for editable text field
   TextEditingController _nameController = TextEditingController();
   TextEditingController _phoneController = TextEditingController();
   TextEditingController _dobController = TextEditingController();
@@ -39,14 +41,18 @@ class _UserFormState extends State<UserForm> {
     final FirebaseAuth _auth = FirebaseAuth.instance;
     var  currentUser = _auth.currentUser;
 
+    //FirebaseFirestore.instance.collection - creates a collection
     CollectionReference _collectionRef = FirebaseFirestore.instance.collection("users-form-data");
     return _collectionRef.doc(currentUser!.email).set({
+      //Set collection properties
       "name":_nameController.text,
       "phone":_phoneController.text,
       "dob":_dobController.text,
       "gender":_genderController.text,
       "age":_ageController.text,
     }).then((value) => Navigator.push(context, MaterialPageRoute(builder: (_)=>BottomNavController()))).catchError((error)=>print("something is wrong. $error"));
+      //.then - if async call is successful navigate to BottomNavController
+      //.catchError - execute if error occurred
   }
 
   @override

@@ -18,14 +18,15 @@ class _HomeState extends State<Home> {
   List<String> _carouselImages = [];
   var _dotPosition = 0;
   List _products = [];
-  var _firestoreInstance = FirebaseFirestore.instance;
+  var _firestoreInstance = FirebaseFirestore.instance;    //Create an instance of firestoreInstance
 
   fetchCarouselImages() async {
+    //QuerySnapshot - store result of query , contain document snapshot
     QuerySnapshot qn =
-    await _firestoreInstance.collection("carousel-slider").get();
+    await _firestoreInstance.collection("carousel-slider").get();     //Get data of carousel-slider collection
     setState(() {
       for (int i = 0; i < qn.docs.length; i++) {
-        _carouselImages.add(
+        _carouselImages.add(    //Add image path in collection to variable
           qn.docs[i]["img-path"],
         );
         print(qn.docs[i]["img-path"]);
@@ -36,10 +37,10 @@ class _HomeState extends State<Home> {
   }
 
   fetchProducts() async {
-    QuerySnapshot qn = await _firestoreInstance.collection("products").get();
+    QuerySnapshot qn = await _firestoreInstance.collection("products").get();   //Get data of products collection
     setState(() {
       for (int i = 0; i < qn.docs.length; i++) {
-        _products.add({
+        _products.add({         //Add product details from collection to variable
           "product-name": qn.docs[i]["product-name"],
           "product-description": qn.docs[i]["product-description"],
           "product-price": qn.docs[i]["product-price"],
@@ -53,6 +54,7 @@ class _HomeState extends State<Home> {
 
   @override
   void initState() {
+    //When this widget object is created, before starting perform below tasks
     fetchCarouselImages();
     fetchProducts();
     super.initState();
@@ -67,28 +69,36 @@ class _HomeState extends State<Home> {
               children: [
                 Padding(
                   padding: EdgeInsets.only(left: 20.w, right: 20.w),
-                  child: TextFormField(
-                    readOnly: true,
-                    decoration: InputDecoration(
-                      fillColor: Colors.white,
-                      focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(0)),
-                          borderSide: BorderSide(color: Colors.blue)),
-                      enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(0)),
-                          borderSide: BorderSide(color: Colors.grey)),
-                      hintText: "Search products here",
-                      hintStyle: TextStyle(fontSize: 15.sp),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFormField(
+                      readOnly: true,
+                      decoration: InputDecoration(    //Used to decorate text field
+                        fillColor: Colors.white,
+                        //focusedBorder - border to be displayed when InputDecorator has focus
+                        //OutlineInputBorder - draws a rounded rectangle around InputDecorator
+                        focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(0)),
+                            borderSide: BorderSide(color: Colors.blue)),
+                        //enabledBorder - border to be displayed when InputDecorator is enabled
+                        enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(0)),
+                            borderSide: BorderSide(color: Colors.grey)),
+                        hintText: "Search products here",
+                        hintStyle: TextStyle(fontSize: 15.sp),
+                      ),
+                      //When tapped on textFormField - navigate to SearchScreen()
+                      onTap: () => Navigator.push(context,
+                          CupertinoPageRoute(builder: (_) => SearchScreen())),
                     ),
-                    onTap: () => Navigator.push(context,
-                        CupertinoPageRoute(builder: (_) => SearchScreen())),
                   ),
                 ),
                 SizedBox(
                   height: 20.h,
                 ),
+                //AspectRatio - Attempts to size child according aspectRatio
                 AspectRatio(
-                  aspectRatio: 2.5,
+                  aspectRatio: 2.5, //width:height ratio
                   child: CarouselSlider(
                       items: _carouselImages
                           .map((item) => Padding(

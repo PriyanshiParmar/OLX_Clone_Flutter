@@ -9,11 +9,11 @@ class UserSelection extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'FlatButton',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+      theme: ThemeData(                 //Overall configuration of theme
+        primarySwatch: Colors.blue, // primarySwatch - not color, but material color - MaterialApp uses diffrent shades of this color
       ),
       home: MyHomePage(),
-      debugShowCheckedModeBanner: false,
+      debugShowCheckedModeBanner: false,    //set debug mode to false
     );
   }
 }
@@ -27,19 +27,23 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.deep_orange,
-      body: SafeArea(
+      backgroundColor: AppColors.deep_orange,   //Using color declared in AppColors()
+      body: SafeArea(   //Places child in such a way that avoid intrusions by os
         child: Center(
-          child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          child: Column(    //A column in center
+          mainAxisAlignment: MainAxisAlignment.center,    //Place child close to middle of main axis
 
-          children: <Widget>[
+          children: [
             ElevatedButton(
               // splashColor: Colors.red,
               // textColor: Colors.white,
               child: Text('Buyer',),
               onPressed: () {
-                Navigator.push(context, CupertinoPageRoute(builder: (_)=>LoginScreen()));
+                //Navigator - transition from one page to other
+                //            Maintains a stack
+                //Navigator.push - Adds route to stack of routes managed by navigator
+                //CupertinoPageRoute - Replace entire screen with an iOS transition
+                Navigator.push(context, CupertinoPageRoute(builder: (_)=>LoginPage()));
               },
             ),
 

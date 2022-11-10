@@ -1,3 +1,6 @@
+import 'package:ecommerce/ui/login_screen.dart';
+import 'package:ecommerce/ui/bottom_nav_pages/sell_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ecommerce/const/AppColors.dart';
 import 'package:ecommerce/ui/bottom_nav_pages/cart.dart';
@@ -16,14 +19,23 @@ class _BottomNavControllerState extends State<BottomNavController> {
     Favourite(),
     Cart(),
     Profile(),
+    Sell(),
   ];
   var _currentIndex = 0;
+
+  signout() async{
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    await auth.signOut();
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => LoginPage()));
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        // backgroundColor: Colors.transparent,
+
         elevation: 0,
         title: Text(
           "OLX",
@@ -31,8 +43,17 @@ class _BottomNavControllerState extends State<BottomNavController> {
         ),
         centerTitle: true,
         automaticallyImplyLeading: false,
+        actions: <Widget>[
+          IconButton(
+              onPressed: () => signout(),
+              icon: Icon(
+                Icons.logout
+              )
+          )
+        ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
+
+      bottomNavigationBar: BottomNavigationBar (
         elevation: 5,
         selectedItemColor: AppColors.deep_orange,
         backgroundColor: Colors.white,
@@ -46,7 +67,9 @@ class _BottomNavControllerState extends State<BottomNavController> {
             label: "Home",
           ),
           BottomNavigationBarItem(
-              icon: Icon(Icons.favorite_outline), label: "Favourite"),
+              icon: Icon(Icons.favorite_outline),
+              label: "Favourite"
+          ),
           BottomNavigationBarItem(
             icon: Icon(Icons.add_shopping_cart),
             label: "Cart",
@@ -54,6 +77,10 @@ class _BottomNavControllerState extends State<BottomNavController> {
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
             label: "Person",
+          ),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.sell),
+              label: "Sell"
           ),
         ],
         onTap: (index) {
